@@ -5,20 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entrepreneurship Game - Monica's Story</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
             text-align: center;
-            background: url('city.jpeg') no-repeat center center fixed !important;
-            background-size: 100vw 100vh;
-            height: 100%;
+            background: url('city.jpeg') no-repeat center center fixed;
+            background-size: cover;
             color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         .container {
             background: rgba(0, 0, 0, 0.7);
             padding: 20px;
-            margin: 50px auto;
+            margin: auto;
             width: 60%;
             border-radius: 10px;
         }
@@ -49,33 +54,6 @@
     </div>
 
     <script>
-        const gameData = {
-            1: {
-                text: "Monica just got off her shift. Does she...",
-                choices: [
-                    {
-                        highRisk: false,
-                        text: "Take an extra shift",
-                        outcomes: [
-                            { money: 30, probability: 0.7},  // 70% chance
-                            { money: 15, probability: 0.3 }   // 30% chance
-                        ]
-                    },
-                    {
-                        highRisk: true,
-                        text: "Start planning her bakery business",
-                        outcomes: [
-                            { stress: 5, probability: 0.5 },  // 50% chance
-                            { stress: 15, probability: 0.5 } // 50% chance
-                        ]
-                    }
-                ]
-            }
-        }
-
-        
-
-
         function chooseOption(option) {
             if (option === 1) {
                 alert("You chose to take the extra shift. You earn extra money, but have less time to work on your business.");
@@ -83,47 +61,6 @@
                 alert("You chose to start planning the bakery business. This could be risky, but might pay off in the long run.");
             }
         }
-
-        function calculateOutcome(outcomes){
-            // Logic to calculate the outcome based on the chosen option
-            probability = outcomes[0].probability; // probability of the first outcome
-
-            if (Math.random() < probability) {
-                // Apply the first outcome
-                applyOutcome(outcomes[0]);
-            } else {
-                // Apply the second outcome
-                applyOutcome(outcomes[1]);
-            }
-
-        }
-
-        function applyOutcome(outcome) {
-            // Logic to apply the outcome to the game state
-            if (outcome.money) {
-                // Update money
-            }
-            if (outcome.stress) {
-                // Update stress
-            }
-        }
-
-        function updateStory() {
-            // Logic to update the story based on choices
-
-        }   
-
-        function startGame() {
-            // Logic to start the game
-
-        }
-
-        function endGame() {
-            // Logic to end the game
-
-        }
-
-        
     </script>
 </body>
 </html>
