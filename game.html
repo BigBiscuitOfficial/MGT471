@@ -13,8 +13,8 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background: url('city.jpeg') no-repeat center center;
-            background-size: cover;
+            background: url('city.jpeg') no-repeat center center !important;
+            background-size: cover !important;
             color: white;
             display: flex;
             flex-direction: column;
@@ -42,25 +42,110 @@
         .choice-btn:hover {
             background-color: #45a049;
         }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+        }
+        .close-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Monica's Story</h1>
-        <p><strong>Current Situation:</strong> Monica is a 35-year-old waitress and single mother struggling to pay rent.</p>
-        <p><strong>Scenario:</strong> Monica just got off her shift at the diner. She’s exhausted but has an idea for a side business selling homemade baked goods. However, she also has an opportunity to take an extra shift tomorrow, which would mean more immediate income but less time for planning her business.</p>
-        <button class="choice-btn" onclick="chooseOption(1)">Take the extra shift for more money</button>
-        <button class="choice-btn" onclick="chooseOption(2)">Start planning the bakery business</button>
+        <p id="story-text"></p>
+        <button id="choice-btn-1" class="choice-btn" onclick="chooseOption(0)"></button>
+        <button id="choice-btn-2" class="choice-btn" onclick="chooseOption(1)"></button>
+    </div>
+    
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <p id="modal-text"></p>
+            <button class="close-btn" onclick="closeModal()">OK</button>
+        </div>
     </div>
 
     <script>
-        function chooseOption(option) {
-            if (option === 1) {
-                alert("You chose to take the extra shift. You earn extra money, but have less time to work on your business.");
-            } else {
-                alert("You chose to start planning the bakery business. This could be risky, but might pay off in the long run.");
+        const gameData = {
+            1: {
+                text: "Monica just got off her shift. Does she...",
+                choices: [
+                    {
+                        highRisk: false,
+                        text: "Take an extra shift for more money",
+                        outcomes: [
+                            { money: 30, probability: 0.7},  // 70% chance
+                            { money: 15, probability: 0.3 }   // 30% chance
+                        ]
+                    },
+                    {
+                        highRisk: true,
+                        text: "Start planning the bakery business",
+                        outcomes: [
+                            { stress: 5, probability: 0.5 },  // 50% chance
+                            { stress: 15, probability: 0.5 } // 50% chance
+                        ]
+                    }
+                ]
             }
+        };
+
+        let currentTurn = 1;
+
+        function chooseOption(optionIndex) {
+            const choice = gameData[currentTurn].choices[optionIndex];
+            const outcome = calculateOutcome(choice.outcomes);
+            let message = `You chose to ${choice.text}.`;
+            if (outcome.money) {
+                message += ` You earn $${outcome.money}.`;
+            }
+            if (outcome.stress) {
+                message += ` Your stress increases by ${outcome.stress}.`;
+            }
+            document.getElementById("modal-text").textContent = message;
+            document.getElementById("modal").style.display = "flex";
         }
+
+        function calculateOutcome(outcomes) {
+            let probability = outcomes[0].probability;
+            return Math.random() < probability ? outcomes[0] : outcomes[1];
+        }
+
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+            updateStory();
+        }
+
+        function updateStory() {
+            document.getElementById("story-text").textContent = gameData[currentTurn].text;
+            document.getElementById("choice-btn-1").textContent = gameData[currentTurn].choices[0].text;
+            document.getElementById("choice-btn-2").textContent = gameData[currentTurn].choices[1].text;
+        }
+
+        updateStory();
     </script>
 </body>
 </html>
