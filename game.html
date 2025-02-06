@@ -71,11 +71,18 @@
             border-radius: 5px;
             margin-top: 10px;
         }
+        .stats {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Monica's Story</h1>
+        <div class="stats">
+            <p>Money: $<span id="money">100</span></p>
+            <p>Stress: <span id="stress">0</span></p>
+        </div>game
         <p id="story-text"></p>
         <button id="choice-btn-1" class="choice-btn" onclick="chooseOption(0)"></button>
         <button id="choice-btn-2" class="choice-btn" onclick="chooseOption(1)"></button>
@@ -88,121 +95,243 @@
         </div>
     </div>
 
-    <script>
-        
-        const gameData = {
-            0: {
-                text: "Monica a waitress and single mother, struggles to pay rent and must act quickly. She has a small side-hustle where she sells baked goods, but income is not guaranteed.",
-                choices: [
-                    {
-                        highRisk: false,
-                        text: "Take an extra shift for more money",
-                        outcomes: [
-                            { money: 200, stress: 10, probability: 0.7, message: "Lucky break! Monica had a successful shift raking in $200 after tips"},  // 70% chance
-                            { money: 15, stress: 25, probability: 0.3, message: "Unfortunately it was a slow night, Monica only brings in $15 " }   // 30% chance
-                        ]
-                    },
-                    {
-                        highRisk: true,
-                        text: "Work on her bakery business",
-                        outcomes: [
-                            {money: 100, stress: 5, probability: 0.5, message: "Hard Work Pays Off! Monica made $100, word has it that a local bakery is interested in investing." },  // 50% chance
-                            {money: -50, stress: 15, probability: 0.5, message: "Better Luck next time, Monica Loses $50 and gains no customers." } // 50% chance
-                        ]
-                    }
-                ]
-            },
-            1: {
-                text: "Monica wants to improve her prospects. Does she...",
-                choices: [
-                    {
-                        highRisk: false,
-                        text: "Enroll in an online business course to learn new skills",
-                        outcomes: [
-                            {money: -50, stress: 5, probability: 0.5, message: "Turns out, the course was a scam. Monica Loses $50"},  // 70% chance
-                            { money: -50, stress: -15, probability: 0.3, message: "Monica learns some new valuable skills which improves her stress level" }   // 30% chance
-                        ]
-                    },
-                    {
-                        highRisk: true,
-                        text: "Network with local business owners",
-                        outcomes: [
-                            { money: 0, stress: 25, probability: 0.7, message: "Monica gets told off by a bakery in competition which increases her stress level." },  // 70% chance
-                            { money: 700, stress: 15, probability: 0.3, message: "Monica learns of a local factory that needs a Caterer for their company picnic. She capitalizes and earns $700" } // 30% chance
-                        ]
-                    }
-                ]
-            },
-            2: {
-                text: "Monica hears about an opportunity to attend a small business fair. Does she...",
-                choices: [
-                    {
-                        highRisk: false,
-                        text: "Attend the fair",
-                        outcomes: [
-                            { money: 300, stress: 10, probability: 0.5, message: },  // 70% chance
-                            { money: 0, stress: 20, probability: 0.5, message:  }   // 30% chance
-                        ]
-                    },
-                    {
-                        highRisk: true,
-                        text: "Work an extra shift to save money",
-                        outcomes: [
-                            {money: 150, stress: 5, probability: 0.5, },  // 50% chance
-                            {money: 15, stress: 15, probability: 0.5, } // 50% chance
-                        ]
-                    }
-                ]
+<script>
+    const gameData = {
+        0: {
+            text: "Monica, a waitress and single mother, struggles to pay rent and must act quickly. She has a small side hustle selling baked goods, but income is not guaranteed.",
+            choices: [
+                {
+                    highRisk: false,
+                    text: "Take an extra shift for more money",
+                    outcomes: [
+                        { money: 200, stress: 10, probability: 0.7, message: "Lucky break! Monica had a successful shift, earning $200 in tips." },  // 70% chance
+                        { money: 15, stress: 25, probability: 0.3, message: "Unfortunately, it was a slow night. Monica only earned $15." }   // 30% chance
+                    ]
+                },
+                {
+                    highRisk: true,
+                    text: "Work on her bakery business",
+                    outcomes: [
+                        { money: 100, stress: 5, probability: 0.5, message: "Hard work pays off! Monica made $100, and a local bakery showed interest in investing." },  // 50% chance
+                        { money: -50, stress: 15, probability: 0.5, message: "Better luck next time! Monica loses $50 and gains no new customers." } // 50% chance
+                    ]
+                }
+            ]
+        },
+        1: {
+            text: "Monica wants to improve her business prospects. What should she do next?",
+            choices: [
+                {
+                    highRisk: false,
+                    text: "Enroll in an online business course to learn new skills",
+                    outcomes: [
+                        { money: -50, stress: 5, probability: 0.5, message: "Turns out, the course was a scam. Monica loses $50." },  // 50% chance
+                        { money: 0, stress: -15, probability: 0.5, message: "Monica learns valuable skills, which reduce her stress." }   // 50% chance
+                    ]
+                },
+                {
+                    highRisk: true,
+                    text: "Network with local business owners",
+                    outcomes: [
+                        { money: 0, stress: 25, probability: 0.7, message: "Monica gets scolded by a competitor, increasing her stress." },  // 70% chance
+                        { money: 700, stress: 15, probability: 0.3, message: "Monica lands a catering gig for a local company picnic, earning $700!" } // 30% chance
+                    ]
+                }
+            ]
+        },
+        2: {
+            text: "Monica hears about an opportunity to attend a small business fair. Does she take the plunge?",
+            choices: [
+                {
+                    highRisk: false,
+                    text: "Attend the fair",
+                    outcomes: [
+                        { money: 300, stress: 10, probability: 0.5, message: "Monica meets a potential investor and earns $300!" },  // 50% chance
+                        { money: 0, stress: 20, probability: 0.5, message: "The fair was a bust. Monica gains nothing and feels more stressed." }   // 50% chance
+                    ]
+                },
+                {
+                    highRisk: true,
+                    text: "Work an extra shift to save money",
+                    outcomes: [
+                        { money: 150, stress: 5, probability: 0.5, message: "Monica earns $150 from the extra shift." },  // 50% chance
+                        { money: 15, stress: 15, probability: 0.5, message: "It was a slow night. Monica only earns $15." } // 50% chance
+                    ]
+                }
+            ]
+        },
+        3: {
+            text: "Monica has an opportunity to expand her bakery. Should she invest in a new oven to increase production?",
+            choices: [
+                {
+                    highRisk: false,
+                    text: "Save up for a new oven",
+                    outcomes: [
+                        { money: -500, stress: 20, probability: 0.5, message: "Monica saves up $500 but feels the strain of not having enough money for other expenses." },  // 50% chance
+                        { money: 0, stress: -10, probability: 0.5, message: "Monica is able to save but is still struggling with her expenses." }   // 50% chance
+                    ]
+                },
+                {
+                    highRisk: true,
+                    text: "Take out a loan to buy the oven",
+                    outcomes: [
+                        { money: -1000, stress: 30, probability: 0.7, message: "Monica takes out a loan and purchases the oven, but it adds immense pressure and financial risk." },  // 70% chance
+                        { money: 500, stress: 10, probability: 0.3, message: "Monica's decision pays off, and the new oven boosts her production and profits." } // 30% chance
+                    ]
+                }
+            ]
+        },
+        4: {
+            text: "Monica receives a large order from a corporate client. Should she accept?",
+            choices: [
+                {
+                    highRisk: false,
+                    text: "Accept the order and deliver on time",
+                    outcomes: [
+                        { money: 800, stress: 15, probability: 0.5, message: "The order is completed successfully, and Monica earns $800!" },  // 50% chance
+                        { money: 0, stress: 25, probability: 0.5, message: "The order is delayed, and Monica faces penalties." }   // 50% chance
+                    ]
+                },
+                {
+                    highRisk: true,
+                    text: "Decline the order and focus on other clients",
+                    outcomes: [
+                        { money: 0, stress: 10, probability: 0.5, message: "Monica chooses to focus on smaller, regular clients, but feels the pressure of missed opportunities." },  // 50% chance
+                        { money: 0, stress: 5, probability: 0.5, message: "Monica feels relieved but knows she passed on a big opportunity." }   // 50% chance
+                    ]
+                }
+            ]
+        },
+        5: {
+            text: "Monica's bakery has gained recognition. She has a chance to open a physical storefront. Should she?",
+            choices: [
+                {
+                    highRisk: false,
+                    text: "Rent a small storefront",
+                    outcomes: [
+                        { money: -1000, stress: 30, probability: 0.5, message: "Monica rents the space, but the cost and responsibilities increase her stress." },  // 50% chance
+                        { money: 500, stress: -10, probability: 0.5, message: "The storefront proves successful, and Monica can pay rent with ease." }   // 50% chance
+                    ]
+                },
+                {
+                    highRisk: true,
+                    text: "Take a risk and rent a larger space",
+                    outcomes: [
+                        { money: -2000, stress: 50, probability: 0.7, message: "The larger space is too expensive, and Monica struggles with the payments." },  // 70% chance
+                        { money: 1500, stress: 20, probability: 0.3, message: "Monica’s gamble pays off! The new space brings in a lot of new customers and revenue." } // 30% chance
+                    ]
+                }
+            ]
+        },
+        6: {
+            text: "Monica has the option to hire staff to expand her operations. Should she hire employees?",
+            choices: [
+                {
+                    highRisk: false,
+                    text: "Hire part-time staff to help",
+                    outcomes: [
+                        { money: -300, stress: 10, probability: 0.5, message: "Monica hires a part-time staff member, but the additional expenses add some pressure." },  // 50% chance
+                        { money: 300, stress: -10, probability: 0.5, message: "The new hire helps Monica manage more customers and reduces her stress." }   // 50% chance
+                    ]
+                },
+                {
+                    highRisk: true,
+                    text: "Hire full-time staff to take over operations",
+                    outcomes: [
+                        { money: -1500, stress: 40, probability: 0.7, message: "Hiring full-time staff strains Monica’s finances and adds significant stress." },  // 70% chance
+                        { money: 2000, stress: 20, probability: 0.3, message: "Hiring a full-time team allows Monica to focus on scaling, and the business flourishes." } // 30% chance
+                    ]
+                }
+            ]
+        },
+        7: {
+            text: "Monica's business is now thriving. She is considering expanding into other cities. Does she take the leap?",
+            choices: [
+                {
+                    highRisk: false,
+                    text: "Expand into nearby cities",
+                    outcomes: [
+                        { money: -1000, stress: 20, probability: 0.5, message: "The expansion is slow, and Monica faces new challenges in different markets." },  // 50% chance
+                        { money: 2000, stress: -10, probability: 0.5, message: "Monica's expansion pays off, and she begins to see a good return on her investment." }   // 50% chance
+                    ]
+                },
+                {
+                    highRisk: true,
+                    text: "Expand into multiple cities at once",
+                    outcomes: [
+                        { money: -5000, stress: 50, probability: 0.7, message: "The rapid expansion overwhelms Monica’s resources and adds immense pressure." },  // 70% chance
+                        { money: 10000, stress: 30, probability: 0.3, message: "Monica’s bold move to expand quickly is a massive success, bringing in huge returns!" } // 30% chance
+                    ]
+                }
+            ]
+        }
+    };
+
+    let money = 100;
+    let stress = 0;
+    let currentTurn = 0;
+
+    function updateMoney(amount) {
+        money += amount;
+        document.getElementById("money").textContent = money;
+    }
+
+    function updateStress(amount) {
+        stress += amount;
+        document.getElementById("stress").textContent = stress;
+    }
+
+    function chooseOption(optionIndex) {
+        const choice = gameData[currentTurn].choices[optionIndex];
+        const outcome = calculateOutcome(choice.outcomes);
+        let message = outcome.message;
+        updateMoney(outcome.money);
+        updateStress(outcome.stress);
+        document.getElementById("modal-text").textContent = message;
+        document.getElementById("modal").style.display = "flex";
+        currentTurn++;
+        if (currentTurn >= Object.keys(gameData).length) {
+            endGame();
+        }
+    }
+
+    function calculateOutcome(outcomes) {
+        const random = Math.random();
+        let cumulativeProbability = 0;
+        for (const outcome of outcomes) {
+            cumulativeProbability += outcome.probability;
+            if (random < cumulativeProbability) {
+                return outcome;
             }
-        };
-
-        let money = 100;
-        let stress = 0;
-
-        function updateMoney(amount) {
-            money += amount;
-            document.getElementById("money").textContent = money;
         }
+        return outcomes[outcomes.length - 1];
+    }
 
-        function updateStress(amount) {
-            stress += amount;
-            document.getElementById("stress").textContent = stress;
-        }
-
-
-        let currentTurn = 0;
-
-        function chooseOption(optionIndex) {
-            const choice = gameData[currentTurn].choices[optionIndex];
-            const outcome = calculateOutcome(choice.outcomes);
-            let message = `You chose to ${choice.text}.`;
-            if (outcome.money) {
-                message += ` You earn $${outcome.money}.`;
-            }
-            if (outcome.stress) {
-                message += ` Your stress increases by ${outcome.stress}.`;
-            }
-            document.getElementById("modal-text").textContent = message;
-            document.getElementById("modal").style.display = "flex";
-        }
-
-        function calculateOutcome(outcomes) {
-            let probability = outcomes[0].probability;
-            return Math.random() < probability ? outcomes[0] : outcomes[1];
-        }
-
-        function closeModal() {
-            document.getElementById("modal").style.display = "none";
+    function closeModal() {
+        document.getElementById("modal").style.display = "none";
+        if (currentTurn < Object.keys(gameData).length) {
             updateStory();
         }
+    }
 
-        function updateStory() {
-            document.getElementById("story-text").textContent = gameData[currentTurn].text;
-            document.getElementById("choice-btn-1").textContent = gameData[currentTurn].choices[0].text;
-            document.getElementById("choice-btn-2").textContent = gameData[currentTurn].choices[1].text;
+    function updateStory() {
+        document.getElementById("story-text").textContent = gameData[currentTurn].text;
+        document.getElementById("choice-btn-1").textContent = gameData[currentTurn].choices[0].text;
+        document.getElementById("choice-btn-2").textContent = gameData[currentTurn].choices[1].text;
+    }
+
+    function endGame() {
+        if (money >= 10000) {
+            document.getElementById("story-text").textContent = "Congratulations! Monica has successfully built a thriving business!";
+        } else {
+            document.getElementById("story-text").textContent = "Game Over! Monica's journey ends here.";
         }
+        document.getElementById("choice-btn-1").style.display = "none";
+        document.getElementById("choice-btn-2").style.display = "none";
+    }
 
-        updateStory();
-    </script>
+    updateStory();
+</script>
+
 </body>
 </html>
