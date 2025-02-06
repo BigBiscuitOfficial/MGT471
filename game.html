@@ -89,31 +89,88 @@
     </div>
 
     <script>
+        
         const gameData = {
-            1: {
-                text: "Monica just got off her shift. Does she...",
+            0: {
+                text: "Monica a waitress and single mother, struggles to pay rent and must act quickly. She has a small side-hustle where she sells baked goods, but income is not guaranteed.",
                 choices: [
                     {
                         highRisk: false,
                         text: "Take an extra shift for more money",
                         outcomes: [
-                            { money: 30, probability: 0.7},  // 70% chance
-                            { money: 15, probability: 0.3 }   // 30% chance
+                            { money: 200, stress: 10, probability: 0.7, message: "Lucky break! Monica had a successful shift raking in $200 after tips"},  // 70% chance
+                            { money: 15, stress: 25, probability: 0.3, message: "Unfortunately it was a slow night, Monica only brings in $15 " }   // 30% chance
                         ]
                     },
                     {
                         highRisk: true,
-                        text: "Start planning the bakery business",
+                        text: "Work on her bakery business",
                         outcomes: [
-                            { stress: 5, probability: 0.5 },  // 50% chance
-                            { stress: 15, probability: 0.5 } // 50% chance
+                            {money: 100, stress: 5, probability: 0.5, message: "Hard Work Pays Off! Monica made $100, word has it that a local bakery is interested in investing." },  // 50% chance
+                            {money: -50, stress: 15, probability: 0.5, message: "Better Luck next time, Monica Loses $50 and gains no customers." } // 50% chance
+                        ]
+                    }
+                ]
+            },
+            1: {
+                text: "Monica wants to improve her prospects. Does she...",
+                choices: [
+                    {
+                        highRisk: false,
+                        text: "Enroll in an online business course to learn new skills",
+                        outcomes: [
+                            {money: -50, stress: 5, probability: 0.5, message: "Turns out, the course was a scam. Monica Loses $50"},  // 70% chance
+                            { money: -50, stress: -15, probability: 0.3, message: "Monica learns some new valuable skills which improves her stress level" }   // 30% chance
+                        ]
+                    },
+                    {
+                        highRisk: true,
+                        text: "Network with local business owners",
+                        outcomes: [
+                            { money: 0, stress: 25, probability: 0.7, message: "Monica gets told off by a bakery in competition which increases her stress level." },  // 70% chance
+                            { money: 700, stress: 15, probability: 0.3, message: "Monica learns of a local factory that needs a Caterer for their company picnic. She capitalizes and earns $700" } // 30% chance
+                        ]
+                    }
+                ]
+            },
+            2: {
+                text: "Monica hears about an opportunity to attend a small business fair. Does she...",
+                choices: [
+                    {
+                        highRisk: false,
+                        text: "Attend the fair",
+                        outcomes: [
+                            { money: 300, stress: 10, probability: 0.5, message: },  // 70% chance
+                            { money: 0, stress: 20, probability: 0.5, message:  }   // 30% chance
+                        ]
+                    },
+                    {
+                        highRisk: true,
+                        text: "Work an extra shift to save money",
+                        outcomes: [
+                            {money: 150, stress: 5, probability: 0.5, },  // 50% chance
+                            {money: 15, stress: 15, probability: 0.5, } // 50% chance
                         ]
                     }
                 ]
             }
         };
 
-        let currentTurn = 1;
+        let money = 100;
+        let stress = 0;
+
+        function updateMoney(amount) {
+            money += amount;
+            document.getElementById("money").textContent = money;
+        }
+
+        function updateStress(amount) {
+            stress += amount;
+            document.getElementById("stress").textContent = stress;
+        }
+
+
+        let currentTurn = 0;
 
         function chooseOption(optionIndex) {
             const choice = gameData[currentTurn].choices[optionIndex];
