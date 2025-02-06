@@ -82,7 +82,7 @@
         <div class="stats">
             <p>Money: $<span id="money">100</span></p>
             <p>Stress: <span id="stress">0</span></p>
-        </div>game
+        </div>
         <p id="story-text"></p>
         <button id="choice-btn-1" class="choice-btn" onclick="chooseOption(0)"></button>
         <button id="choice-btn-2" class="choice-btn" onclick="chooseOption(1)"></button>
@@ -264,6 +264,47 @@
                     ]
                 }
             ]
+        },
+        8: {
+            text: "Monica faces a major decision: should she franchise her bakery or keep it independent?",
+            choices: [
+                {
+                    highRisk: false,
+                    text: "Keep the business independent",
+                    outcomes: [
+                        { money: 0, stress: -20, probability: 0.5, message: "Monica enjoys the freedom of running her business independently, reducing her stress." },  // 50% chance
+                        { money: 1000, stress: 10, probability: 0.5, message: "Monica’s business grows steadily, and she earns $1000 from loyal customers." }   // 50% chance
+                    ]
+                },
+                {
+                    highRisk: true,
+                    text: "Franchise the bakery",
+                    outcomes: [
+                        { money: -3000, stress: 50, probability: 0.7, message: "Franchising proves too costly and stressful, and Monica struggles to keep up." },  // 70% chance
+                        { money: 15000, stress: 30, probability: 0.3, message: "Franchising is a huge success! Monica’s bakery becomes a household name, earning $15,000!" } // 30% chance
+                    ]
+                }
+            ]
+        },
+        9: {
+            text: "Monica’s journey comes to a crossroads. Should she retire early or continue growing her empire?",
+            choices: [
+                {
+                    highRisk: false,
+                    text: "Retire and enjoy the fruits of her labor",
+                    outcomes: [
+                        { money: 0, stress: -50, probability: 1, message: "Monica retires happily, enjoying a stress-free life with her family." }  // 100% chance
+                    ]
+                },
+                {
+                    highRisk: true,
+                    text: "Continue expanding the business",
+                    outcomes: [
+                        { money: 20000, stress: 50, probability: 0.5, message: "Monica’s empire grows exponentially, earning her $20,000, but the stress takes a toll." },  // 50% chance
+                        { money: -10000, stress: 100, probability: 0.5, message: "The expansion fails, and Monica loses everything, ending her journey in despair." } // 50% chance
+                    ]
+                }
+            ]
         }
     };
 
@@ -290,7 +331,7 @@
         document.getElementById("modal-text").textContent = message;
         document.getElementById("modal").style.display = "flex";
         currentTurn++;
-        if (currentTurn >= Object.keys(gameData).length) {
+        if (currentTurn >= Object.keys(gameData).length || stress >= 200 || money <= -5000) {
             endGame();
         }
     }
@@ -309,7 +350,7 @@
 
     function closeModal() {
         document.getElementById("modal").style.display = "none";
-        if (currentTurn < Object.keys(gameData).length) {
+        if (currentTurn < Object.keys(gameData).length && stress < 200 && money > -5000) {
             updateStory();
         }
     }
@@ -321,10 +362,17 @@
     }
 
     function endGame() {
-        if (money >= 10000) {
-            document.getElementById("story-text").textContent = "Congratulations! Monica has successfully built a thriving business!";
-        } else {
-            document.getElementById("story-text").textContent = "Game Over! Monica's journey ends here.";
+        if (stress >= 200) {
+            document.getElementById("story-text").textContent = "Game Over! Monica couldn't handle the stress and had to step away from her business.";
+        } else if (money <= -5000) {
+            document.getElementById("story-text").textContent = "Game Over! Monica's business went bankrupt, and she lost everything.";
+        } else if (money >= 10000) {
+            document.getElementById("story-text").textContent = "Congratulations! Monica has successfully built a thriving business empire!";
+        } else if (money < 100){
+          document.getElementById("story-text").textContent = "Monica's worse off than when she started, though she's learned a lot.";
+        }
+        else{
+            document.getElementById("story-text").textContent = "Monica's journey ends here. She made it through, but there’s still room for growth.";
         }
         document.getElementById("choice-btn-1").style.display = "none";
         document.getElementById("choice-btn-2").style.display = "none";
