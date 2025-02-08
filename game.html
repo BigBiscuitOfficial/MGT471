@@ -24,15 +24,16 @@
         .container {
             background: rgba(0, 0, 0, 0.7);
             padding: 20px;
-            width: 60%;
+            width: 90%;
+            max-width: 600px;
             border-radius: 10px;
         }
         .choice-btn {
             display: block;
-            width: 80%;
+            width: 100%;
             margin: 10px auto;
             padding: 10px;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             background-color: #4CAF50;
             color: white;
@@ -56,12 +57,12 @@
             align-items: center;
         }
         .modal-content {
-            max-width: 600px; /* Adjust width as needed */
-            margin: 0 auto; /* Centers the text block */
-            line-height: 1.5; /* Improves readability */
-            padding: 20px; 
-            background-color: #222;
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
             padding: 20px;
+            background-color: #222;
             border-radius: 10px;
             text-align: center;
             color: white;
@@ -77,6 +78,24 @@
         }
         .stats {
             margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+            .choice-btn {
+                font-size: 14px;
+                padding: 8px;
+            }
+            .modal-content {
+                width: 95%;
+                padding: 15px;
+            }
+            .close-btn {
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
